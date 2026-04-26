@@ -52,17 +52,14 @@ def generar_video_texto():
     clip.write_videofile(OUTPUT_VIDEO, fps=24)
 
 def subir_a_tiktok():
-    print("🚀 Intentando subir a tu cuenta...")
-    
-    # Creamos el archivo de cookies al vuelo
-    with open('cookies.json', 'w') as f:
-        json.dump(MIS_COOKIES_DATOS, f)
+    print("🚀 Intentando subir a tu cuenta directamente...")
     
     try:
+        # Pasamos MIS_COOKIES_DATOS (la lista que tienes arriba) directamente
         upload_video(
             OUTPUT_VIDEO,
             description='Bot automático #IA #IshakBot',
-            cookies='cookies.json',
+            cookies=MIS_COOKIES_DATOS, # <-- Le pasamos la lista directamente
             browser='chromium',
             headless=True
         )
