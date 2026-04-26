@@ -1,6 +1,7 @@
 import os
 import random
 import json
+import tempfile
 from PIL import Image, ImageDraw, ImageFont
 from moviepy.video.VideoClip import ImageClip
 from tiktok_uploader.upload import upload_video
@@ -20,7 +21,7 @@ VIDEO_DURATION = 7
 OUTPUT_VIDEO = "video_final.mp4"
 TEMP_IMAGE = "temp_background.png"
 
-# TUS COOKIES (YA INTEGRADAS)
+# TUS COOKIES (YA INTEGRADAS Y LIMPIAS)
 MIS_COOKIES_DATOS = [
     {"domain": ".tiktok.com", "expirationDate": 1784734987, "name": "delay_guest_mode_vid", "path": "/", "secure": True, "value": "8"},
     {"domain": ".tiktok.com", "expirationDate": 1808770630, "name": "tt-target-idc-sign", "path": "/", "secure": True, "value": "WSYNVbkIog5Yw3lFm2yP3vSUpxdc_TgZbjdmTJbm5Z9Th_tsf7qR79VyiW9vuuqW6vPfJv9pfiLjI2yE_ML5FM74cyKKLTRh8ThSlXAEF1YLKwpy3666DWg-ZIwpaG5a_N88Drgw1jO7px4m5TslN5F9upWq9ZoiSQstEC7OHydWQz_Yt01kkmtZkiVznwOlJ6D2eGgPtxrO19NRvuo1nSihs1BYivivuZ3zShqwzd3hm5ZFXnYpeH37ebWJ-N5T9L3GD0szE4k29iHjpGAVaD_tJkbnxxu7ZgDawqLoPO2EF-LQS_7OiN5vqbPkiy4f7FqHlyp4Xx-InNPLy-WSu8lu6VBZq89ZfBjluCMQzm5Wrl73n6nFHGpLCiEPTRWqBuShkNHhoLscj7XkXB943aZ3NlWWVoP7mPdkW8Va_naJ3ViSCyQYg26uG8TJi7qLAXnjstZfGyty_RjT8gC322rThkW_rkudJPEY0VFUAgV67lhKVeP4Hle4kvyxIKSV"},
@@ -47,19 +48,23 @@ def generar_video_texto():
     d.text((100, 900), texto, fill=(255, 255, 255), font=font)
     img.save(TEMP_IMAGE)
     
-    print("🎬 Creando video...")
+    print("🎬 Creando video con MoviePy 2.0...")
     clip = ImageClip(TEMP_IMAGE).with_duration(VIDEO_DURATION)
     clip.write_videofile(OUTPUT_VIDEO, fps=24)
 
 def subir_a_tiktok():
-    print("🚀 Intentando subir a tu cuenta directamente...")
+    print("🚀 Iniciando proceso de subida...")
     
+    # Creamos un archivo temporal real para la librería
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as tf:
+        json.dump(MIS_COOKIES_DATOS, tf)
+        temp_cookie_path = tf.name
+
     try:
-        # Pasamos MIS_COOKIES_DATOS (la lista que tienes arriba) directamente
         upload_video(
             OUTPUT_VIDEO,
             description='Bot automático #IA #IshakBot',
-            cookies=MIS_COOKIES_DATOS, # <-- Le pasamos la lista directamente
+            cookies=temp_cookie_path,
             browser='chromium',
             headless=True
         )
@@ -67,8 +72,8 @@ def subir_a_tiktok():
     except Exception as e:
         print(f"❌ Fallo en la subida: {e}")
     finally:
-        if os.path.exists('cookies.json'):
-            os.remove('cookies.json')
+        if os.path.exists(temp_cookie_path):
+            os.remove(temp_cookie_path)
 
 if __name__ == "__main__":
     generar_video_texto()
