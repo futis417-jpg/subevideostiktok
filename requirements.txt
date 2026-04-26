@@ -1,4 +1,4 @@
 pillow
 moviepy>=2.0.0
-tiktok-uploader
+tiktok-uploader==0.1.9
 playwright
