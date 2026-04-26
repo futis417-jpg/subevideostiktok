@@ -21,33 +21,28 @@ TEMP_IMAGE = "temp_background.png"
 def generar_video_texto():
     print("🎨 Generando imagen de texto...")
     
-    # 1. Crear lienzo vertical (1080x1920)
-    # Color de fondo aleatorio para variar el contenido
+    # Color de fondo aleatorio
     fondo_color = (random.randint(0, 100), random.randint(0, 100), random.randint(0, 100))
     img = Image.new('RGB', (1080, 1920), color=fondo_color)
     d = ImageDraw.Draw(img)
     
-    # 2. Elegir un texto aleatorio
     texto = random.choice(TEXTOS_NOTICIAS)
     
-    # 3. Intentar cargar una fuente (si no está arial.ttf, usa la básica)
     try:
         font = ImageFont.truetype("arial.ttf", FONT_SIZE)
     except:
         font = ImageFont.load_default()
 
-    # 4. Centrar el texto (ajuste manual básico)
+    # Dibujar texto y adorno
     d.text((100, 900), texto, fill=(255, 255, 255), font=font)
-    
-    # Añadir un "adorno" tipo TikTok
-    d.rectangle([90, 880, 110, 1000], fill=(254, 44, 85)) # Color rosado TikTok
+    d.rectangle([90, 880, 110, 1000], fill=(254, 44, 85))
     
     img.save(TEMP_IMAGE)
 
     print("🎬 Convirtiendo imagen a video...")
-    # 5. Crear el clip de video
-   clip = ImageClip(TEMP_IMAGE).with_duration(VIDEO_DURATION)
-    clip.write_videofile(OUTPUT_VIDEO, fps=24, codec="libx264")
+    # ESTA ES LA LÍNEA DEL ERROR - ASEGÚRATE QUE ESTÉ ALINEADA CON EL PRINT DE ARRIBA
+    clip = ImageClip(TEMP_IMAGE).with_duration(VIDEO_DURATION)
+    clip.write_videofile(OUTPUT_VIDEO, fps=24)
 
 def subir_a_tiktok():
     print("🚀 Iniciando subida a TikTok...")
