@@ -2,32 +2,25 @@ name: TikTok Auto-Uploader
 
 on:
   schedule:
-    # Se ejecuta cada 20 minutos
     - cron: '*/20 * * * *'
-  workflow_dispatch: # Permite ejecutarlo manualmente para probar
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout del código
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configurar Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Instalar dependencias
+      - name: Install
         run: |
-          pip install tiktok-uploader playwright moviepy pillow
+          pip install -r requirements.txt
           playwright install chromium
 
-      - name: Generar y Subir Video
-        env:
-          # Aquí guardaremos tus cookies de forma segura
-          TIKTOK_COOKIES: ${{ secrets.TIKTOK_COOKIES }}
-        run: |
-          # Crea el archivo de cookies desde el secreto de GitHub
-          echo "$TIKTOK_COOKIES" > cookies.txt
-          python main.py
+      - name: Run Bot
+        run: python main.py
