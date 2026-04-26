@@ -1,0 +1,4 @@
+pillow
+moviepy
+tiktok-uploader
+playwright
