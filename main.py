@@ -46,7 +46,7 @@ def generar_video_texto():
 
     print("🎬 Convirtiendo imagen a video...")
     # 5. Crear el clip de video
-    clip = ImageClip(TEMP_IMAGE).set_duration(VIDEO_DURATION)
+   clip = ImageClip(TEMP_IMAGE).with_duration(VIDEO_DURATION)
     clip.write_videofile(OUTPUT_VIDEO, fps=24, codec="libx264")
 
 def subir_a_tiktok():
