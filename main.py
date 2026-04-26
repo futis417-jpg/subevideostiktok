@@ -1,7 +1,7 @@
 import os
 import random
 from PIL import Image, ImageDraw, ImageFont
-from moviepy.editor import ImageClip
+from moviepy.video.VideoClip import ImageClip
 from tiktok_uploader.upload import upload_video
 
 # --- CONFIGURACIÓN ---
